@@ -412,7 +412,7 @@ LCDWIKI_SPI::LCDWIKI_SPI(int16_t wid, int16_t heg, int8_t cs, int8_t cd,
 // Initialization lcd modules
 void LCDWIKI_SPI::Init_LCD(void) {
   reset();
-  Led_control(true);
+  //Led_control(true);
   if (lcd_model == 0xFFFF) {
     lcd_model = Read_ID();
   }
