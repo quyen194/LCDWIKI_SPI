@@ -819,12 +819,12 @@ int16_t LCDWIKI_SPI::Read_GRAM(int16_t x, int16_t y, uint16_t *block, int16_t w,
 
 // read LCD controller chip ID
 uint16_t LCDWIKI_SPI::Read_ID(void) {
-  uint16_t ret;
+  uint32_t ret;
   if ((Read_Reg(0x04, 0) == 0x00) && (Read_Reg(0x04, 1) == 0x8000)) {
     uint8_t buf[] = {0xFF, 0x83, 0x57};
     Push_Command(HX8357D_SETC, buf, sizeof(buf));
-    ret = (Read_Reg(0xD0, 0) << 16) | Read_Reg(0xD0, 1);
-    if ((ret == 0x990000) || (ret == 0x900000)) {
+    ret = (((uint32_t)Read_Reg(0xD0, 0)) << 16) | Read_Reg(0xD0, 1);
+    if ((ret == 0x00990000) || (ret == 0x00900000)) {
       return 0x9090;
     }
   }
