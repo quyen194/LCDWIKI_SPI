@@ -2,7 +2,7 @@
 #define _mcu_spi_magic_
 
 //#define write8(d) {Spi_Write(d);}
-#define write8(d) Spi_Write(d)
+#define write8(d) Spi_Write((d))
 #define read8(dst) { dst=Spi_Read();}
 #define setWriteDir() 
 #define setReadDir()  
@@ -52,14 +52,21 @@
 #define writeData16(x)  CD_DATA; write16(x)
 #define writeData18(x)  CD_DATA; write8((x>>8)&0xF8);write8((x>>3)&0xFC);write8(x<<3)
 
-
-//#define writeCmdData8(a, d) { CD_COMMAND; write8(a); CD_DATA; write8(d); }
-//#define writeCmdData16(a, d) { \
-  //uint8_t hi, lo; \
- // hi = (a) >> 8; lo = (a); CD_COMMAND; write8(hi); write8(lo); \
- // hi = (d) >> 8; lo = (d); CD_DATA   ; write8(hi); write8(lo); }
+/*
+#define writeCmdData8(a, d) { CD_COMMAND; write8(a); CD_DATA; write8(d); }
+#define writeCmdData16(a, d) { \
+uint8_t hi, lo; \
+    hi = (a) >> 8; lo = (a); CD_COMMAND; write8(hi); write8(lo); \
+    hi = (d) >> 8; lo = (d); CD_DATA   ; write8(hi); write8(lo); }
+*/
 
 #define writeCmdData8(a, d) CD_COMMAND; write8(a); CD_DATA; write8(d)
-#define writeCmdData16(a, d)  CD_COMMAND; write8(a>>8); write8(a); CD_DATA; write8(d>>8); write8(d)
+#define writeCmdData16(a, d)   \
+  CD_COMMAND;                  \
+  write8((uint8_t)((a) >> 8)); \
+  write8((uint8_t)(a));        \
+  CD_DATA;                     \
+  write8((uint8_t)((d) >> 8)); \
+  write8((uint8_t)(d))
 
 #endif // _mcu_spi_magic_

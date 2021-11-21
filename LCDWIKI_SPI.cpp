@@ -640,14 +640,20 @@ void LCDWIKI_SPI::Set_Addr_Window(int16_t x1, int16_t y1, int16_t x2,
     return;
   }
   else if (lcd_driver == ID_7735_128) {
-    uint8_t x_buf[] = {(x1+xoffset)>>8,(x1+xoffset)&0xFF,(x2+xoffset)>>8,(x2+xoffset)&0xFF};
-    uint8_t y_buf[] = {(y1+yoffset)>>8,(y1+yoffset)&0xFF,(y2+yoffset)>>8,(y2+yoffset)&0xFF};
+    uint8_t x_buf[] = {
+        (uint8_t)((x1 + xoffset) >> 8), (uint8_t)((x1 + xoffset) & 0xFF),
+        (uint8_t)((x2 + xoffset) >> 8), (uint8_t)((x2 + xoffset) & 0xFF)};
+    uint8_t y_buf[] = {
+        (uint8_t)((y1 + yoffset) >> 8), (uint8_t)((y1 + yoffset) & 0xFF),
+        (uint8_t)((y2 + yoffset) >> 8), (uint8_t)((y2 + yoffset) & 0xFF)};
     Push_Command(XC, x_buf, 4);
     Push_Command(YC, y_buf, 4);
   }
   else {
-    uint8_t x_buf[] = {x1>>8,x1&0xFF,x2>>8,x2&0xFF};
-    uint8_t y_buf[] = {y1>>8,y1&0xFF,y2>>8,y2&0xFF};
+    uint8_t x_buf[] = {(uint8_t)(x1 >> 8), (uint8_t)(x1 & 0xFF),
+                       (uint8_t)(x2 >> 8), (uint8_t)(x2 & 0xFF)};
+    uint8_t y_buf[] = {(uint8_t)(y1 >> 8), (uint8_t)(y1 & 0xFF),
+                       (uint8_t)(y2 >> 8), (uint8_t)(y2 & 0xFF)};
 
     Push_Command(XC, x_buf, 4);
     Push_Command(YC, y_buf, 4);
@@ -674,7 +680,7 @@ void LCDWIKI_SPI::Set_LR(void) {
 void LCDWIKI_SPI::Push_Any_Color(uint16_t *block, int16_t n, bool first,
                                  uint8_t flags) {
   uint16_t color;
-  uint8_t h, l;
+  // uint8_t h, l;
   bool isconst = flags & 1;
   //  bool isbigend = (flags & 2) != 0;
   CS_ACTIVE;
@@ -741,8 +747,9 @@ uint16_t LCDWIKI_SPI::Color_To_565(uint8_t r, uint8_t g, uint8_t b) {
 
 //read value from lcd register
 uint16_t LCDWIKI_SPI::Read_Reg(uint16_t reg, int8_t index) {
-  uint16_t ret,high;
-  uint8_t low;
+  uint16_t ret;
+  //uint16_t high;
+  //uint8_t low;
   //  if (!have_reset)
   // {
   //     reset();
@@ -766,9 +773,9 @@ uint16_t LCDWIKI_SPI::Read_Reg(uint16_t reg, int8_t index) {
 //read graph RAM data
 int16_t LCDWIKI_SPI::Read_GRAM(int16_t x, int16_t y, uint16_t *block, int16_t w,
                                int16_t h) {
-  uint16_t ret, dummy;
+  uint16_t ret;
   int16_t n = w * h;
-  uint8_t r, g, b, tmp;
+  uint8_t r, g, b;
   Set_Addr_Window(x, y, x + w - 1, y + h - 1);
   while (n > 0) {
     CS_ACTIVE;
