@@ -101,7 +101,8 @@ class LCDWIKI_SPI : public LCDWIKI_GUI {
 
  protected:
   uint8_t xoffset, yoffset;
-  uint16_t WIDTH, HEIGHT, width, height, rotation, lcd_driver, lcd_model;
+  uint8_t rotation;
+  uint16_t WIDTH, HEIGHT, width, height, lcd_driver, lcd_model;
   boolean hw_spi;
 
  private:
