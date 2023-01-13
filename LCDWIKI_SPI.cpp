@@ -410,7 +410,7 @@ LCDWIKI_SPI::LCDWIKI_SPI(int16_t wid, int16_t heg, int8_t cs, int8_t cd,
 }
 
 // Initialization lcd modules
-void LCDWIKI_SPI::Init_LCD(void) {
+bool LCDWIKI_SPI::Init_LCD(void) {
   reset();
   //Led_control(true);
   if (lcd_model == 0xFFFF) {
@@ -419,6 +419,8 @@ void LCDWIKI_SPI::Init_LCD(void) {
   //  uint16_t ID = Read_ID();
   start(lcd_model);
   //  Set_Rotation(0);
+
+  return lcd_model != 0xFFFF;
 }
 
 // Initialization common to both shield & breakout configs

@@ -66,7 +66,7 @@ class LCDWIKI_SPI : public LCDWIKI_GUI {
               int8_t mosi, int8_t reset, int8_t clk, int8_t led);
   LCDWIKI_SPI(int16_t wid, int16_t heg, int8_t cs, int8_t cd, int8_t reset,
               int8_t led);
-  void Init_LCD(void);
+  bool Init_LCD(void);
   void reset(void);
   void start(uint16_t ID);
   void Draw_Pixe(int16_t x, int16_t y, uint16_t color);
